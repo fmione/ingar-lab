@@ -1,0 +1,90 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Exp Config {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-wrapper">
+
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            
+                            <!-- [ Main Content ] start -->
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h5>Import Experiment</h5>
+                                    <hr>
+
+                                    <form action="" method="post">
+                                        {{ form.hidden_tag() }}
+                                    
+                                        <div class="card"> 
+                                            <div class="card-header"> 
+                                                <h5 class="mb-0">
+                                                        Experiment Details
+                                                </h5> 
+                                            </div> 
+                                            
+                                            <div class="card-body"> 
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            {{ form.exp_name.label }}
+                                                            {{ form.exp_name(class="form-control", placeholder="Enter Experiment Name") }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            {{ form.exp_file.label }}
+                                                            {{ form.exp_file(class="form-control") }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                        </div>
+
+                                    
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                {{ form.create(class="form-control btn-primary") }}
+                                            </div>
+                                        </div>
+                                        {% if form.errors %}
+                                        <hr>
+                                        <label class="text-danger">Please, check these fields:</label><br>
+                                        {% for field, errorMsg in form.errors.items() %}
+                                        <label class="text-danger">{{ form[field].label }}:</label>
+                                        <ul class="errors text-danger">
+                                            {% for err in errorMsg %}                                        
+                                            <li>{{ err }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </form>
+                                </div>
+                                
+                            </div>
+                            <!-- [ Main Content ] end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+{% endblock javascripts %}

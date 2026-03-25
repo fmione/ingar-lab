@@ -23,7 +23,7 @@
                 <li class="nav-item pcoded-menu-caption">
                     <label>Property Graph</label>
                 </li>
-                <li data-username="PG management" class="nav-item pcoded-hasmenu {% if ('users' or 'objectives' or 'strains') in segment %} active {% endif %}">
+                <!-- <li data-username="PG management" class="nav-item pcoded-hasmenu {% if ('users' or 'objectives' or 'strains') in segment %} active {% endif %}">
                     <a href="javascript:" class="nav-link"><span class="pcoded-micon"><i class="feather icon-box"></i></span>
                         <span class="pcoded-mtext">PG Management</span></a>
                     <ul class="pcoded-submenu">
@@ -35,10 +35,10 @@
                         <li class=""><a href="/protocols" class="">Protocols</a></li>
                         <li class=""><a href="/models" class="">Models</a></li>
                     </ul>
-                </li>
-                <li data-username="PG Queries" class="nav-item {% if 'queries' in segment %} active {% endif %}">
-                    <a href="/queries" class="nav-link "><span class="pcoded-micon"><i class="feather icon-search"></i></span><span
-                            class="pcoded-mtext">PG Queries</span></a>
+                </li> -->
+                <li data-username="Import Experiment" class="nav-item {% if 'import' in segment %} active {% endif %}">
+                    <a href="/import" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-plus"></i></span><span
+                            class="pcoded-mtext">Import Experiment</span></a>
                 </li>
                 
                 <!-- <li data-username="PG Schema" class="nav-item {% if 'schema' in segment %} active {% endif %}">
@@ -50,19 +50,12 @@
                     <label>More Resources</label>
                 </li>    
 
-                <li data-username="Experiment Config File" class="nav-item {% if 'exp_config' in segment %} active {% endif %}">
+                <!-- <li data-username="Experiment Config File" class="nav-item {% if 'exp_config' in segment %} active {% endif %}">
                     <a href="/exp_config" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span
                             class="pcoded-mtext">Create Exp. Config File</span></a>
-                </li>
+                </li> -->
 
-                <li data-username="Support Page" class="nav-item">
-                    <a target="_blank" href="http://localhost:8080/" class="nav-link">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-play"></i>
-                        </span>
-                        <span class="pcoded-mtext">Apache Airflow Platform</span>
-                    </a>
-                </li>
+                
                 <li data-username="Support Page" class="nav-item">
                     <a target="_blank" href="http://localhost:7474/browser/" class="nav-link">
                         <span class="pcoded-micon">
@@ -70,7 +63,8 @@
                         </span>
                         <span class="pcoded-mtext">Neo4j Browser</span>
                     </a>
-                </li>    
+                </li>
+                    
                 <li class="nav-item pcoded-menu-caption">
                     <label>Account</label>
                 </li>   

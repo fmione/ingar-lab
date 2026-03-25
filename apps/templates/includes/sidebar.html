@@ -1,0 +1,92 @@
+<!-- [ navigation menu ] start -->
+<nav class="pcoded-navbar">
+    <div class="navbar-wrapper">
+        <div class="navbar-brand header-logo">
+            <a href="/" class="b-brand">
+                <div class="b-bg">
+                    <!-- <i class="feather icon-trending-up"></i> -->
+                </div>
+                <span class="b-title"><b>INGAR LAB</b></span>
+            </a>
+            <a class="mobile-menu" id="mobile-collapse" href="javascript:"><span></span></a>
+        </div>
+        <div class="navbar-content scroll-div">
+            <ul class="nav pcoded-inner-navbar">
+                <li class="nav-item pcoded-menu-caption">
+                    <label>Navigation</label>
+                </li>
+                <li data-username="Dashboard" class="nav-item {% if 'index' in segment %} active {% endif %}">
+                    <a href="/" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span
+                            class="pcoded-mtext">Dashboard</span></a>
+                </li>
+                                
+                <li class="nav-item pcoded-menu-caption">
+                    <label>Property Graph</label>
+                </li>
+                <li data-username="PG management" class="nav-item pcoded-hasmenu {% if ('users' or 'objectives' or 'strains') in segment %} active {% endif %}">
+                    <a href="javascript:" class="nav-link"><span class="pcoded-micon"><i class="feather icon-box"></i></span>
+                        <span class="pcoded-mtext">PG Management</span></a>
+                    <ul class="pcoded-submenu">
+                        <li class=""><a href="/users" class="">Users</a></li>
+                        <li class=""><a href="/objectives" class="">Objectives</a></li>
+                        <li class=""><a href="/strains" class="">Strains</a></li>
+                        <li class=""><a href="/plasmids" class="">Plasmids</a></li>
+                        <li class=""><a href="/devices" class="">Devices</a></li>
+                        <li class=""><a href="/protocols" class="">Protocols</a></li>
+                        <li class=""><a href="/models" class="">Models</a></li>
+                    </ul>
+                </li>
+                <li data-username="PG Queries" class="nav-item {% if 'queries' in segment %} active {% endif %}">
+                    <a href="/queries" class="nav-link "><span class="pcoded-micon"><i class="feather icon-search"></i></span><span
+                            class="pcoded-mtext">PG Queries</span></a>
+                </li>
+                
+                <!-- <li data-username="PG Schema" class="nav-item {% if 'schema' in segment %} active {% endif %}">
+                    <a href="/schema" class="nav-link "><span class="pcoded-micon"><i class="feather icon-layers"></i></span><span
+                            class="pcoded-mtext">PG Schema</span></a>
+                </li> -->
+
+                <li class="nav-item pcoded-menu-caption">
+                    <label>More Resources</label>
+                </li>    
+
+                <li data-username="Experiment Config File" class="nav-item {% if 'exp_config' in segment %} active {% endif %}">
+                    <a href="/exp_config" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span
+                            class="pcoded-mtext">Create Exp. Config File</span></a>
+                </li>
+
+                <li data-username="Support Page" class="nav-item">
+                    <a target="_blank" href="http://localhost:8080/" class="nav-link">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-play"></i>
+                        </span>
+                        <span class="pcoded-mtext">Apache Airflow Platform</span>
+                    </a>
+                </li>
+                <li data-username="Support Page" class="nav-item">
+                    <a target="_blank" href="http://localhost:7474/browser/" class="nav-link">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-cloud"></i>
+                        </span>
+                        <span class="pcoded-mtext">Neo4j Browser</span>
+                    </a>
+                </li>    
+                <li class="nav-item pcoded-menu-caption">
+                    <label>Account</label>
+                </li>   
+                <li data-username="Profile Page" 
+                    class="nav-item {% if 'profile' in segment %} active {% endif %}">
+                    <a href="/profile.html" class="nav-link">
+                        <span class="pcoded-micon"><i class="feather icon-user"></i></span>
+                            <span class="pcoded-mtext">Profile Page</span></a>
+                </li>     
+                <li data-username="Disabled Menu" class="nav-item">
+                    <a href="{{ url_for('authentication_blueprint.logout') }}" class="nav-link">
+                        <span class="pcoded-micon"><i class="feather icon-power"></i></span><span class="pcoded-mtext">Logout</span>
+                    </a>
+                </li>     
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- [ navigation menu ] end -->

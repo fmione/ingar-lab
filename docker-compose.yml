@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+
+  appseed-app:
+    container_name: appseed_app
+    restart: always
+    env_file:
+      - ".env"
+    build: .
+    volumes:
+      - ./:/web
+    ports: 
+      - 5000:5000
+    depends_on: 
+      lab-neo4j:
+        condition: service_healthy
+      
+  lab-neo4j:
+    image: neo4j
+    ports: 
+      - 7474:7474
+      - 7687:7687
+    volumes:
+      - ./neo4j/data:/data
+    environment:
+      NEO4J_AUTH: ${NEO4J_USER}/${NEO4J_PASSWORD}
+    healthcheck:
+      test: ["CMD", "cypher-shell", "-u", "${NEO4J_USER}", "-p", "${NEO4J_PASSWORD}", "RETURN 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+ 

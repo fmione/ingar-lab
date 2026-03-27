@@ -1,6 +1,6 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} Exp Config {% endblock %} 
+{% block title %} Import Experiment {% endblock %} 
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -22,7 +22,7 @@
                                     <h5>Import Experiment</h5>
                                     <hr>
 
-                                    <form action="" method="post">
+                                    <form method="post" enctype="multipart/form-data">
                                         {{ form.hidden_tag() }}
                                     
                                         <div class="card"> 
@@ -34,40 +34,57 @@
                                             
                                             <div class="card-body"> 
                                                 <div class="row">
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
                                                             {{ form.exp_name.label }}
                                                             {{ form.exp_name(class="form-control", placeholder="Enter Experiment Name") }}
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
-                                                            {{ form.exp_file.label }}
-                                                            {{ form.exp_file(class="form-control") }}
+                                                            {{ form.init_time.label }}
+                                                            {{ form.init_time(class="form-control") }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            {{ form.bioreactor_type.label }}
+                                                            {{ form.bioreactor_type(class="form-control") }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            {{ form.exp_files.label }}
+                                                            {{ form.exp_files(class="form-control") }}
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div> 
                                         </div>
 
-                                    
+                                        {% with messages = get_flashed_messages(with_categories=true) %}
+                                        {% if messages %}
+                                            {% for category, message in messages %}
+                                            <div class="alert alert-{{ category }}">
+                                                {{ message }}
+                                            </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                        {% endwith %}
+
                                         <div class="row">
                                             <div class="col-md-2">
-                                                {{ form.create(class="form-control btn-primary") }}
+                                                <button type="submit" id="submit-btn" class="btn btn-primary">
+                                                    <span id="btn-text">Import</span>
+                                                    <span id="btn-loading" style="display:none;">
+                                                        <span class="spinner"></span>
+                                                        Processing...
+                                                    </span>
+                                                </button>
+
                                             </div>
                                         </div>
-                                        {% if form.errors %}
-                                        <hr>
-                                        <label class="text-danger">Please, check these fields:</label><br>
-                                        {% for field, errorMsg in form.errors.items() %}
-                                        <label class="text-danger">{{ form[field].label }}:</label>
-                                        <ul class="errors text-danger">
-                                            {% for err in errorMsg %}                                        
-                                            <li>{{ err }}</li>
-                                            {% endfor %}
-                                        </ul>
-                                        {% endfor %}
-                                        {% endif %}
+                                        
                                     </form>
                                 </div>
                                 
@@ -86,5 +103,18 @@
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
+<script>
+    document.querySelector("form").addEventListener("submit", function () {
+        const btn = document.getElementById("submit-btn");
+        const text = document.getElementById("btn-text");
+        const loading = document.getElementById("btn-loading");
 
+        // Deshabilitar botón
+        btn.disabled = true;
+
+        // Cambiar texto
+        text.style.display = "none";
+        loading.style.display = "inline-block";
+    });
+</script>
 {% endblock javascripts %}

@@ -1,0 +1,94 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Plot Results {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<link href="{{ config.ASSETS_ROOT }}/plugins/select2/css/style.min.css" rel="stylesheet" />
+<link href="{{ config.ASSETS_ROOT }}/plugins/select2/css/select2.bootstrap5.min.css" rel="stylesheet" />
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-wrapper">
+
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <div class="main-body">
+                        <div class="page-wrapper">
+
+                            <!-- [ Form ] start -->
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>Search Experiment</h5>
+                                        </div>
+                                        <div class="card-block">
+                                            <form role="form" method="post" action="">
+                                                <div class="row">
+                                                   <div class="col-md-8">
+                                                        <select id="experiment_select" class="form-control", name="experiment_select">
+                                                            <option value="">Select an Experiment</option>
+                                                            {% for experiment in experiments %}
+                                                                <option value="{{ experiment.name }}">{{ experiment.name }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <button class="btn btn-primary w-100" type="submit" style="margin-top: -3px">Submit</button>
+                                                    </div>
+                                                </div>
+                                            </form>                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- [ Form ] end -->
+
+                            <!-- [ ChartResults ] start -->
+                             {% if graphJSON %}
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>OD Measurements</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="chart"></div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            <!-- [ ChartResults ] end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="{{ config.ASSETS_ROOT }}/plugins/select2/js/select2.js"></script>
+<script src="{{ config.ASSETS_ROOT }}/plugins/plotly/plotly.min.js" charset="utf-8"></script>
+<script>
+    var graph = {{ graphJSON | safe }};
+    Plotly.newPlot('chart', graph.data, graph.layout);
+</script>
+
+<script>
+$(document).ready(function() {
+    $('#experiment_select').select2({
+        placeholder: "Experiment name",
+        theme: 'bootstrap-5',
+        allowClear: true,
+        width: '100%'
+    });
+});
+</script>
+{% endblock javascripts %}

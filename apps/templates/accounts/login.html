@@ -17,17 +17,10 @@
 
                     <h3 class="mb-4">Login</h3>
 
-                    <span class="mb-0 text-muted">
-                        {% if msg %}
-                            <span class="text-danger">{{ msg | safe }}</span>
-                        {% else %}
-                            Add your credentials
-                        {% endif %} 
+                    <span class="mb-2 text-muted"></span>
+                        Add your credentials<br><br>
                     </span>
-
-                    <br />
-                    <br />
-
+                   
                     <form role="form" method="post" action="">
 
                         {{ form.hidden_tag() }}                    
@@ -39,6 +32,16 @@
                         <div class="input-group mb-4">
                             {{ form.password(placeholder="Password", class="form-control", type="password") }}
                         </div>
+
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                        {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message | safe }}
+                        </div>
+                        {% endfor %}    
+                        {% endif %}
+                        {% endwith %}
                         
                         <button type="submit" name="login" class="btn btn-primary shadow-2 mb-4">Login</button>
 

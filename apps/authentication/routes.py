@@ -3,7 +3,7 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 
-from flask import render_template, redirect, request, url_for
+from flask import render_template, redirect, request, url_for, flash
 from flask_login import (
     current_user,
     login_user,
@@ -37,8 +37,8 @@ def login():
         # if user not found
         user = user1 if user1 else user2
         if not user:
+            flash("Unknown User", "danger")
             return render_template( 'accounts/login.html',
-                                    msg='Unknown User',
                                     form=login_form)
 
         # check the password
@@ -49,13 +49,13 @@ def login():
                 login_user(user)
                 return redirect(url_for('authentication_blueprint.route_default'))
             else:
+                flash("User is disabled", "danger")
                 return render_template('accounts/login.html',
-                        msg='User is disabled',
                         form=login_form)
     
         # password is not ok
+        flash("Wrong password", "danger")
         return render_template('accounts/login.html',
-                               msg='Wrong password',
                                form=login_form)
 
     if not current_user.is_authenticated:
@@ -75,16 +75,16 @@ def register():
         # Check username exists
         user = User.nodes.get_or_none(username=username)
         if user:
+            flash("Username already registered", "danger")
             return render_template('accounts/register.html',
-                                   msg='Username already registered',
                                    success=False,
                                    form=create_account_form)
         
         # Check email exists
         user = User.nodes.get_or_none(email=email)
         if user:
+            flash("Email already registered", "danger")
             return render_template('accounts/register.html',
-                                   msg='Email already registered',
                                    success=False,
                                    form=create_account_form)
 
@@ -95,8 +95,8 @@ def register():
         # Delete user from session
         logout_user()
 
+        flash("User created successfully", "success")
         return render_template('accounts/register.html',
-                               msg='User created successfully.',
                                success=True,
                                form=create_account_form)
 

@@ -6,7 +6,7 @@ Copyright (c) 2019 - present AppSeed.us
 from apps.management import blueprint
 from flask import render_template, request
 from flask_login import login_required
-from apps.neomodel.model import User, Objective, Strain, Plasmid, ProtocolTask, Model, Device, db
+from apps.neomodel.model import User, Objective, Strain, ProtocolTask, Device, db
 from neomodel.integration.pandas import to_dataframe
 import numpy as np
 import json
@@ -39,13 +39,6 @@ def get_strains():
     item_list = Strain.nodes.all()
     return render_template('home/management.html', segment="strains", properties=properties, items=item_list)
 
-@blueprint.route('/plasmids')
-@login_required
-def get_plasmids():
-    properties = ["name", "supplier", "acquisition_date", "doi"]
-    item_list = Plasmid.nodes.all()
-    return render_template('home/management.html', segment="plasmids", properties=properties, items=item_list)
-
 @blueprint.route('/devices')
 @login_required
 def get_devices():
@@ -59,13 +52,6 @@ def get_protocols():
     properties = ["name", "description", "doi", "steps"]
     item_list = ProtocolTask.nodes.all()
     return render_template('home/management.html', segment="Protocols", properties=properties, items=item_list)
-
-@blueprint.route('/models')
-@login_required
-def get_models():
-    properties = ["name", "description", "doi"]
-    item_list = Model.nodes.all()
-    return render_template('home/management.html', segment="Models", properties=properties, items=item_list)
 
 @blueprint.route('/queries', methods=['GET', 'POST'])
 @login_required

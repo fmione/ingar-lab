@@ -3,17 +3,17 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 
+from time import sleep
+
 from apps.home import blueprint
-from flask import render_template, request
+from apps.home.util import process_experiment_files
+from flask import render_template, request, flash, redirect, url_for
 from flask_login import login_required
 from jinja2 import TemplateNotFound
 from apps.home.forms import ImportExperimentForm
-from apps.neomodel.model import User, Objective, Strain, Plasmid, Model, ComputationalMethod
 import yaml
 import os
 
-
-yaml_template = {""}
 
 @blueprint.route('/index')
 @login_required
@@ -24,23 +24,34 @@ def index():
 @blueprint.route('/import', methods=['GET', 'POST'])
 @login_required
 def import_experiment():
-    form = ImportExperimentForm(request.form)
+    form = ImportExperimentForm()
     
     if 'create' in form and form.validate_on_submit():
-        print("OKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
 
-        print(form.exp_file.name)
-        print(form.exp_file.data)
+        print('ACAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+        print(form.exp_files.data)
 
-        if form.exp_file.data:
-            print("FILEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
-            image_data = request.FILES[form.exp_file.name].read()
+        if form.exp_files.data:
+            status, message = process_experiment_files(form.exp_name.data, form.init_time.data, form.bioreactor_type.data, form.exp_files.data)
 
-            print(image_data)
+            if status:
+                flash(message, "success")
+                return redirect(url_for('home_blueprint.import_experiment'))
+            else:
+                flash(message, "danger")
+                render_template('home/import.html', segment="import", form=form)
+        else:
+            return render_template('home/import.html', segment="import", form=form)
 
-            # open(os.path.join(UPLOAD_PATH, form.image.data), 'w').write(image_data)
+    else:
+        if form.is_submitted() and not form.validate():
+            errors = []
+            for field, errs in form.errors.items():
+                label = getattr(form, field).label.text
+                errors.extend([f"{label}: {e}" for e in errs])
 
-        pass
+            if errors:
+                flash(" | ".join(errors), "danger")
 
     return render_template('home/import.html', segment="import", form=form)
 

@@ -11,30 +11,59 @@ from flask import render_template, request, flash, redirect, url_for
 from flask_login import login_required
 from jinja2 import TemplateNotFound
 from apps.neomodel.model import Experiment
+from apps.queries.forms import PlotExperimentForm
+from apps.queries.util import get_experiment_info
+from plotly.utils import PlotlyJSONEncoder
 import plotly.express as px
 import json
 
 
-@blueprint.route('/plots')
+@blueprint.route('/plots', methods=['GET', 'POST'])
 @login_required
 def plots():
 
-    # # df = ...  # tu dataframe filtrado
+    form = PlotExperimentForm()
 
-    # fig = px.line(
-    #     df,
-    #     x="timestamp",
-    #     y="od_reading",
-    #     title="OD Reading over Time"
-    # )
+    graphJSON = []
+    titles = []
 
-    # graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-
-    # return render_template("plot.html", graphJSON=graphJSON)
-
+    # get experiments to fill the select input
     experiments = Experiment.nodes.all()
+    form.experiment_select.choices = [('', '')] + [(e.name, e.name) for e in experiments]
 
-    return render_template('queries/plots.html', segment='plots', form={}, graphJSON={}, experiments=experiments)
+    # case experiment selected (POST)
+    if form.validate_on_submit():
+        graphs = []
+        titles = []
+
+        try:
+
+            exp_info = get_experiment_info(form.experiment_select.data)
+
+            for m_type in exp_info["mt.name"].unique().tolist():                        
+                fig = px.line(
+                    exp_info[exp_info["mt.name"] == m_type],
+                    x="m.time",
+                    y="m.value",
+                    color='br.name',
+                    labels={
+                        "m.time": f"<b>Time [{exp_info['m.time_unit'].unique()[0]}]</b>",
+                        "m.value": f"<b>{m_type}</b>",
+                        "br.name": "<b>Bioreactor</b>"
+                    }
+                )
+
+                graphs.append(fig)
+                titles.append(m_type)
+
+            graphJSON = json.dumps(graphs, cls=PlotlyJSONEncoder)
+        
+        except Exception as e:
+            print(f"Error processing graph: {e}")
+            flash("Error loading experiment data", "danger")
+
+
+    return render_template('queries/plots.html', segment='plots', form=form, graphJSON=graphJSON, titles=titles)
 
 
 # generic route template

@@ -21,25 +21,27 @@
 
                             <!-- [ Form ] start -->
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-md-6">
                                     <div class="card">
                                         <div class="card-header">
                                             <h5>Search Experiment</h5>
                                         </div>
                                         <div class="card-block">
-                                            <form role="form" method="post" action="">
+                                            <form method="post">
+                                                {{ form.hidden_tag() }}
                                                 <div class="row">
-                                                   <div class="col-md-8">
-                                                        <select id="experiment_select" class="form-control", name="experiment_select">
-                                                            <option value="">Select an Experiment</option>
-                                                            {% for experiment in experiments %}
-                                                                <option value="{{ experiment.name }}">{{ experiment.name }}</option>
-                                                            {% endfor %}
-                                                        </select>
+                                                   <div class="col-md-8 mb-3">
+                                                        {{ form.experiment_select(class="form-control") }}
                                                     </div>
 
                                                     <div class="col-md-4">
-                                                        <button class="btn btn-primary w-100" type="submit" style="margin-top: -3px">Submit</button>
+                                                        <button class="btn btn-primary w-100" type="submit" name="submit" id="submit-btn" style="margin-top: -3px">
+                                                            <span id="btn-text">Submit</span>
+                                                            <span id="btn-loading" style="display:none;">
+                                                                <span class="spinner"></span>
+                                                                Processing...
+                                                            </span>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </form>                                            
@@ -49,16 +51,19 @@
                             </div>
                             <!-- [ Form ] end -->
 
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">
+                                    {{ message }}
+                                </div>
+                                {% endfor %}
+                            {% endif %}
+                            {% endwith %}
+
                             <!-- [ ChartResults ] start -->
                              {% if graphJSON %}
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>OD Measurements</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div id="chart"></div>
-                                </div>
-                            </div>
+                            <div class="row" id="charts-container"></div>
                             {% endif %}
                             <!-- [ ChartResults ] end -->
                         </div>
@@ -76,9 +81,50 @@
 {% block javascripts %}
 <script src="{{ config.ASSETS_ROOT }}/plugins/select2/js/select2.js"></script>
 <script src="{{ config.ASSETS_ROOT }}/plugins/plotly/plotly.min.js" charset="utf-8"></script>
+
 <script>
-    var graph = {{ graphJSON | safe }};
-    Plotly.newPlot('chart', graph.data, graph.layout);
+document.addEventListener("DOMContentLoaded", function() {
+
+    var graphs = {{ graphJSON | safe }};
+    var titles = {{ titles | safe }};
+
+    if (typeof graphs === "string") {
+        graphs = JSON.parse(graphs);
+    }
+    if (!Array.isArray(graphs)) {
+        graphs = [graphs];
+    }
+
+    var container = document.getElementById("charts-container");
+
+    graphs.forEach(function(graph, i) {
+
+        var col = document.createElement("div");
+        col.className = "col-md-6 mb-3";
+
+        var card = document.createElement("div");
+        card.className = "card h-100";
+
+        var header = document.createElement("div");
+        header.className = "card-header";
+        header.innerHTML = "<h5>" + (titles[i]) + "</h5>";
+
+        var body = document.createElement("div");
+        body.className = "card-body p-0";
+
+        var chartDiv = document.createElement("div");
+        chartDiv.id = "chart-" + i;
+
+        body.appendChild(chartDiv);
+        card.appendChild(header);
+        card.appendChild(body);
+        col.appendChild(card);
+        container.appendChild(col);
+
+        Plotly.newPlot(chartDiv, graph.data, graph.layout);
+    });
+
+});
 </script>
 
 <script>
@@ -90,5 +136,20 @@ $(document).ready(function() {
         width: '100%'
     });
 });
+</script>
+
+<script>
+    document.querySelector("form").addEventListener("submit", function () {
+        const btn = document.getElementById("submit-btn");
+        const text = document.getElementById("btn-text");
+        const loading = document.getElementById("btn-loading");
+
+        // Deshabilitar botón
+        btn.disabled = true;
+
+        // Cambiar texto
+        text.style.display = "none";
+        loading.style.display = "inline-block";
+    });
 </script>
 {% endblock javascripts %}

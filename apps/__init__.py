@@ -8,6 +8,7 @@ import os
 from flask import Flask
 from flask_login import LoginManager
 from importlib import import_module
+from neomodel import install_all_labels
 
 
 login_manager = LoginManager()
@@ -27,4 +28,5 @@ def create_app(config):
     app.config.from_object(config)
     register_extensions(app)
     register_blueprints(app)
+    install_all_labels()
     return app

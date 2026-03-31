@@ -9,6 +9,8 @@ from wtforms import StringField, SubmitField, SelectField, MultipleFileField, Da
 from wtforms.validators import DataRequired
 
 
+class PlotExperimentForm(FlaskForm):
+    experiment_select = SelectField("Experiment name", choices=[], validators=[DataRequired()])
 
-
+    submit = SubmitField('Submit')
 

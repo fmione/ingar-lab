@@ -3,16 +3,12 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 
-from time import sleep
-
 from apps.home import blueprint
 from apps.home.util import process_experiment_files
 from flask import render_template, request, flash, redirect, url_for
 from flask_login import login_required
 from jinja2 import TemplateNotFound
 from apps.home.forms import ImportExperimentForm
-import yaml
-import os
 
 
 @blueprint.route('/index')
@@ -26,25 +22,16 @@ def index():
 def import_experiment():
     form = ImportExperimentForm()
     
-    if 'create' in form and form.validate_on_submit():
+    if form.validate_on_submit():
+        status, message = process_experiment_files(form.exp_name.data, form.init_time.data, form.bioreactor_type.data, form.exp_files.data)
 
-        print('ACAAAAAAAAAAAAAAAAAAAAAAAAAAA')
-        print(form.exp_files.data)
-
-        if form.exp_files.data:
-            status, message = process_experiment_files(form.exp_name.data, form.init_time.data, form.bioreactor_type.data, form.exp_files.data)
-
-            if status:
-                flash(message, "success")
-                return redirect(url_for('home_blueprint.import_experiment'))
-            else:
-                flash(message, "danger")
-                render_template('home/import.html', segment="import", form=form)
+        if status:
+            flash(message, "success")
+            return redirect(url_for('home_blueprint.import_experiment'))
         else:
-            return render_template('home/import.html', segment="import", form=form)
+            flash(message, "danger")
 
-    else:
-        if form.is_submitted() and not form.validate():
+    elif form.is_submitted():
             errors = []
             for field, errs in form.errors.items():
                 label = getattr(form, field).label.text
@@ -54,62 +41,6 @@ def import_experiment():
                 flash(" | ".join(errors), "danger")
 
     return render_template('home/import.html', segment="import", form=form)
-
-
-# @blueprint.route('/exp_config', methods=['GET', 'POST'])
-# @login_required
-# def create_experiment_config():
-
-#     form = CreateExpConfigForm(request.form)
-
-#     # --- buttons actions
-#     # add responsible row
-#     if form.add_responsible.data:
-#         form.responsibles.append_entry(None)
-#     # delete responsible row
-#     form.resp_deleted.data = False
-#     for idx, resp in enumerate(form.responsibles.entries):
-#         if resp.resp_delete.data:      
-#             del form.responsibles.entries[idx]
-#             form.resp_deleted.data = True
-
-#     # add mbr group row
-#     if form.add_mbr_group.data:
-#         form.mbr_groups.append_entry(None)
-#     # delete responsible row
-#     form.mbr_group_deleted.data = False
-#     for idx, mbrg in enumerate(form.mbr_groups.entries):
-#         if mbrg.mbr_group_delete.data:      
-#             del form.mbr_groups.entries[idx]
-#             form.mbr_group_deleted.data = True
-   
-
-#     # --- get data for select inputs
-#     # set input data for objective
-#     form.objective.choices = [obj.name for obj in Objective.nodes.all()]
-
-#     # set input data for responsibles
-#     user_list = User.nodes.all()
-#     for resp in form.responsibles.entries:
-#         resp.resp_name.choices = [user.username for user in user_list] 
-#         resp.resp_role.choices = ["laboratory_supervisor", "laboratory_experimentation", "experimental_planner", "computational_algorithms", "workflow_definition"]
-
-#     # set input data for strains, objectives, plasmids, comp methods
-#     strain_list = Strain.nodes.all()
-#     plasmid_list = Plasmid.nodes.all()
-#     model_list = Model.nodes.all()
-#     comp_method_list = ComputationalMethod.nodes.all()
-#     for mbrg in form.mbr_groups.entries:
-#         mbrg.comp_method.choices = [comp_method.name for comp_method in comp_method_list] 
-#         mbrg.strain.choices = [strain.name for strain in strain_list]
-#         mbrg.plasmid.choices = [plasmid.name for plasmid in plasmid_list]
-#         mbrg.model.choices = [model.name for model in model_list]   
-
-#     if form.validate_on_submit():
-#         print("estaaaa validadooooooooo")
-#         # TODO: create yaml y descargar
-
-#     return render_template('home/exp_config.html', segment="exp_config", form=form)
 
 
 # generic route template

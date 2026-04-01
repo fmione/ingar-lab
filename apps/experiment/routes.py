@@ -109,7 +109,7 @@ def experiment_info(exp_name=None):
         flash("Error loading experiment data", "danger")
 
 
-    return render_template('experiment/info.html', segment='info', graphJSON=graphJSON, titles=titles, exp_data=exp_data)
+    return render_template('experiment/info.html', segment='experiment', graphJSON=graphJSON, titles=titles, exp_data=exp_data)
 
 
 @blueprint.route('/experiment/import', methods=['GET', 'POST'])

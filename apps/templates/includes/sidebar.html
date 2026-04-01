@@ -25,18 +25,18 @@
                     <label>Management</label>
                 </li>
 
-                <li data-username="Entities" class="nav-item pcoded-hasmenu {% if ('users' or 'objectives' or 'strains') in segment %} active {% endif %}">
+                <li data-username="Entities" class="nav-item pcoded-hasmenu {% if segment in ['users', 'objectives', 'strains', 'measurement-type', 'bioreactor-type', 'devices', 'calibration', 'protocols'] %} active pcoded-trigger {% endif %}">
                     <a href="javascript:" class="nav-link"><span class="pcoded-micon"><i class="feather icon-box"></i></span>
                         <span class="pcoded-mtext">Entities</span></a>
                     <ul class="pcoded-submenu">
-                        <li class=""><a href="/users" class="">Users</a></li>
-                        <li class=""><a href="/objectives" class="">Objectives</a></li>
-                        <li class=""><a href="/measurement-type" class="">Measurement Types</a></li>
-                        <li class=""><a href="/bioreactor-type" class="">Bioreactor Types</a></li>
-                        <li class=""><a href="/strains" class="">Strains</a></li>
-                        <li class=""><a href="/devices" class="">Devices - Sensors</a></li>
-                        <li class=""><a href="/calibration" class="">Calibration</a></li>
-                        <li class=""><a href="/protocols" class="">Protocols</a></li>
+                        <li class="{% if segment == 'users' %}active{% endif %}"><a href="/users" class="">Users</a></li>
+                        <li class="{% if segment == 'objectives' %}active{% endif %}"><a href="/objectives" class="">Objectives</a></li>
+                        <li class="{% if segment == 'measurement-type' %}active{% endif %}"><a href="/measurement-type" class="">Measurement Types</a></li>
+                        <li class="{% if segment == 'bioreactor-type' %}active{% endif %}"><a href="/bioreactor-type" class="">Bioreactor Types</a></li>
+                        <li class="{% if segment == 'strains' %}active{% endif %}"><a href="/strains" class="">Strains</a></li>
+                        <li class="{% if segment == 'devices' %}active{% endif %}"><a href="/devices" class="">Devices - Sensors</a></li>
+                        <li class="{% if segment == 'calibration' %}active{% endif %}"><a href="/calibration" class="">Calibration</a></li>
+                        <li class="{% if segment == 'protocols' %}active{% endif %}"><a href="/protocols" class="">Protocols</a></li>
                     </ul>
                 </li>
                                 

@@ -47,7 +47,7 @@ def get_strains():
 def get_devices():
     properties = ["name", "model", "type", "manufacturer", "driver"]
     item_list = Device.nodes.all()
-    return render_template('management/management.html', segment="Devices - Sensors", properties=properties, items=item_list)
+    return render_template('management/management.html', segment="devices", properties=properties, items=item_list)
 
 
 @blueprint.route('/protocols')
@@ -55,7 +55,7 @@ def get_devices():
 def get_protocols():
     properties = ["name", "description", "sop", "steps"]
     item_list = ProtocolTask.nodes.all()
-    return render_template('management/management.html', segment="Protocols", properties=properties, items=item_list)
+    return render_template('management/management.html', segment="protocols", properties=properties, items=item_list)
 
 
 @blueprint.route('/measurement-type')
@@ -63,7 +63,7 @@ def get_protocols():
 def get_measurement_types():
     properties = ["name"]
     item_list = MeasurementType.nodes.all()
-    return render_template('management/management.html', segment="Measurement Types", properties=properties, items=item_list)
+    return render_template('management/management.html', segment="measurement-type", properties=properties, items=item_list)
 
 
 @blueprint.route('/bioreactor-type')
@@ -71,7 +71,7 @@ def get_measurement_types():
 def get_bioreactor_types():
     properties = ["name", "volume"]
     item_list = BioreactorType.nodes.all()
-    return render_template('management/management.html', segment="Bioreactor Types", properties=properties, items=item_list)
+    return render_template('management/management.html', segment="bioreactor-type", properties=properties, items=item_list)
 
 
 @blueprint.route('/calibration')
@@ -79,4 +79,4 @@ def get_bioreactor_types():
 def get_calibrations():
     properties = ["device", "calibration_date", "file_path", "calibrated_by"]
     # item_list = DeviceCalibration.nodes.all()
-    return render_template('management/management.html', segment="Calibrations", properties=properties, items={})
+    return render_template('management/management.html', segment="calibration", properties=properties, items={})

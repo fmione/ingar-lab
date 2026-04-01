@@ -39,7 +39,11 @@
                                                 <td>{{ exp.date }}</td>
                                                 <td class="col-1">
                                                     <a href="{{ url_for('experiment_blueprint.experiment_info', exp_name=exp.name) }}" 
-                                                        class="btn btn-outline-primary btn-sm p-1 px-3 pr-10 m-0">View</a>
+                                                        class="btn btn-outline-primary btn-sm p-1 px-3 pr-10 m-0"
+                                                        onclick="handleClick(this)">
+                                                            <span class="btn-text">View</span>
+                                                            <span class="spinner d-none"></span>
+                                                    </a>
                                                 </td>
                                             </tr>
                                             {% endfor %}
@@ -92,6 +96,33 @@ $(document).ready(function() {
         "columnDefs": [
             { "targets": [2], "className": "dt-left" }
         ]
+    });
+});
+</script>
+
+<script>
+function handleClick(el) {
+    el.querySelector(".btn-text").classList.add("d-none");
+    el.querySelector(".spinner").classList.remove("d-none");
+    el.classList.add("disabled");
+    document.querySelectorAll(".btn").forEach(el2 => {
+        el2.classList.add("disabled");
+    });
+}
+</script>
+
+<script>
+window.addEventListener("pageshow", function(event) {
+    
+    document.querySelectorAll(".btn").forEach(el => {
+        const text = el.querySelector(".btn-text");
+        const spinner = el.querySelector(".spinner");
+
+        if (text && spinner) {
+            text.classList.remove("d-none");
+            spinner.classList.add("d-none");
+            el.classList.remove("disabled");
+        }
     });
 });
 </script>

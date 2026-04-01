@@ -1,0 +1,101 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Plot Results {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-wrapper">
+
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <div class="main-body">
+                        <div class="page-wrapper">
+
+                            <button type="button" class="btn btn-outline-secondary mb-3" 
+                                onclick="history.back()">Back to list</a>
+                            </button>
+
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h5>Experiment Details</h5>
+                                </div>
+
+                                <div class="card-body">
+                                    <p class="card-text"><b>Name:</b> {{ exp_data.name }}</p>
+                                    <p class="card-text"><b>Description:</b> {{ exp_data.description }}</p>
+                                    <p class="card-text"><b>Date:</b> {{ exp_data.start_time.strftime("%Y-%m-%d") }}</p>
+                                </div>
+                            </div>
+
+                            <!-- [ ChartResults ] start -->
+                             {% if graphJSON %}
+                            <div class="row" id="charts-container"></div>
+                            {% endif %}
+                            <!-- [ ChartResults ] end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="{{ config.ASSETS_ROOT }}/plugins/plotly/plotly.min.js" charset="utf-8"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+    var graphs = {{ graphJSON | safe }};
+    var titles = {{ titles | safe }};
+
+    if (typeof graphs === "string") {
+        graphs = JSON.parse(graphs);
+    }
+    if (!Array.isArray(graphs)) {
+        graphs = [graphs];
+    }
+
+    var container = document.getElementById("charts-container");
+
+    graphs.forEach(function(graph, i) {
+
+        var col = document.createElement("div");
+        col.className = "col-md-6 mb-3";
+
+        var card = document.createElement("div");
+        card.className = "card h-100";
+
+        var header = document.createElement("div");
+        header.className = "card-header";
+        header.innerHTML = "<h5>" + (titles[i]) + "</h5>";
+
+        var body = document.createElement("div");
+        body.className = "card-body p-0";
+
+        var chartDiv = document.createElement("div");
+        chartDiv.id = "chart-" + i;
+
+        body.appendChild(chartDiv);
+        card.appendChild(header);
+        card.appendChild(body);
+        col.appendChild(card);
+        container.appendChild(col);
+
+        Plotly.newPlot(chartDiv, graph.data, graph.layout);
+    });
+
+});
+</script>
+
+{% endblock javascripts %}

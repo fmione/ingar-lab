@@ -4,43 +4,16 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 from apps.home import blueprint
-from apps.home.util import process_experiment_files
-from flask import render_template, request, flash, redirect, url_for
+from flask import render_template, request
 from flask_login import login_required
 from jinja2 import TemplateNotFound
-from apps.home.forms import ImportExperimentForm
+
 
 
 @blueprint.route('/index')
 @login_required
 def index():
     return render_template('home/index.html', segment='index')
-
-
-@blueprint.route('/import', methods=['GET', 'POST'])
-@login_required
-def import_experiment():
-    form = ImportExperimentForm()
-    
-    if form.validate_on_submit():
-        status, message = process_experiment_files(form.exp_name.data, form.init_time.data, form.bioreactor_type.data, form.exp_files.data)
-
-        if status:
-            flash(message, "success")
-            return redirect(url_for('home_blueprint.import_experiment'))
-        else:
-            flash(message, "danger")
-
-    elif form.is_submitted():
-            errors = []
-            for field, errs in form.errors.items():
-                label = getattr(form, field).label.text
-                errors.extend([f"{label}: {e}" for e in errs])
-
-            if errors:
-                flash(" | ".join(errors), "danger")
-
-    return render_template('home/import.html', segment="import", form=form)
 
 
 # generic route template

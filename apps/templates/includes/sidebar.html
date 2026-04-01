@@ -13,37 +13,45 @@
         <div class="navbar-content scroll-div">
             <ul class="nav pcoded-inner-navbar">
                 <li class="nav-item pcoded-menu-caption">
-                    <label>Navigation</label>
+                    <label>Home</label>
                 </li>
+
                 <li data-username="Dashboard" class="nav-item {% if 'index' in segment %} active {% endif %}">
                     <a href="/" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span
                             class="pcoded-mtext">Dashboard</span></a>
                 </li>
-                                
+
                 <li class="nav-item pcoded-menu-caption">
-                    <label>Property Graph</label>
+                    <label>Management</label>
                 </li>
-                <!-- <li data-username="PG management" class="nav-item pcoded-hasmenu {% if ('users' or 'objectives' or 'strains') in segment %} active {% endif %}">
+
+                <li data-username="Entities" class="nav-item pcoded-hasmenu {% if ('users' or 'objectives' or 'strains') in segment %} active {% endif %}">
                     <a href="javascript:" class="nav-link"><span class="pcoded-micon"><i class="feather icon-box"></i></span>
-                        <span class="pcoded-mtext">PG Management</span></a>
+                        <span class="pcoded-mtext">Entities</span></a>
                     <ul class="pcoded-submenu">
                         <li class=""><a href="/users" class="">Users</a></li>
                         <li class=""><a href="/objectives" class="">Objectives</a></li>
+                        <li class=""><a href="/measurement-type" class="">Measurement Types</a></li>
+                        <li class=""><a href="/bioreactor-type" class="">Bioreactor Types</a></li>
                         <li class=""><a href="/strains" class="">Strains</a></li>
-                        <li class=""><a href="/plasmids" class="">Plasmids</a></li>
-                        <li class=""><a href="/devices" class="">Devices</a></li>
+                        <li class=""><a href="/devices" class="">Devices - Sensors</a></li>
+                        <li class=""><a href="/calibration" class="">Calibration</a></li>
                         <li class=""><a href="/protocols" class="">Protocols</a></li>
-                        <li class=""><a href="/models" class="">Models</a></li>
                     </ul>
-                </li> -->
+                </li>
+                                
+                <li class="nav-item pcoded-menu-caption">
+                    <label>Experiments</label>
+                </li>
+
                 <li data-username="Import Experiment" class="nav-item {% if 'import' in segment %} active {% endif %}">
-                    <a href="/import" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-plus"></i></span><span
+                    <a href="/experiment/import" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-plus"></i></span><span
                             class="pcoded-mtext">Import Experiment</span></a>
                 </li>
                 
-                <li data-username="Plots" class="nav-item {% if 'plots' in segment %} active {% endif %}">
-                    <a href="/plots" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-plus"></i></span><span
-                            class="pcoded-mtext">Plots</span></a>
+                <li data-username="Experiments" class="nav-item {% if 'experiment' in segment %} active {% endif %}">
+                    <a href="/experiment" class="nav-link "><span class="pcoded-micon"><i class="feather icon-folder"></i></span><span
+                            class="pcoded-mtext">Experiments</span></a>
                 </li>
 
 

@@ -60,6 +60,7 @@ WORKFLOW_NODE_TRIGGER_RULES = {"all_success": "all_success", "one_success": "one
 # -- nodes
 class Experiment(StructuredNode):
     name = StringProperty(unique_index=True, required=True)   
+    description = StringProperty()   
     start_time = DateTimeProperty(required=True)
 
     objective = RelationshipTo('Objective', 'DESIGNED_FOR', cardinality=ZeroOrOne)

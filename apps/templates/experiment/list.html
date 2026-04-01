@@ -1,0 +1,98 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Plot Results {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<link href="{{ config.ASSETS_ROOT }}/plugins/data-tables/css/style.min.css" rel="stylesheet" />
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-wrapper">
+
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Experiment List</h5>
+                                </div>
+                                <div class="card-body pt-2">
+                                    <table id="experimentsTable" class="display">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Description</th>
+                                                <th>Date</th>
+                                                <th class="col-1">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for exp in experiments %}
+                                            <tr>
+                                                <td>{{ exp.name }}</td>
+                                                <td>{{ exp.description }}</td>
+                                                <td>{{ exp.date }}</td>
+                                                <td class="col-1">
+                                                    <a href="{{ url_for('experiment_blueprint.experiment_info', exp_name=exp.name) }}" 
+                                                        class="btn btn-outline-primary btn-sm p-1 px-3 pr-10 m-0">View</a>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+
+                                
+
+                                    {% with messages = get_flashed_messages(with_categories=true) %}
+                                    {% if messages %}
+                                        {% for category, message in messages %}
+                                        <div class="alert alert-{{ category }}">
+                                            {{ message }}
+                                        </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                    {% endwith %}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="{{ config.ASSETS_ROOT }}/plugins/data-tables/js/data-tables.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#experimentsTable').DataTable({
+        "order": [[2, "desc"]], 
+        "pageLength": 10,
+        "language": {
+            "search": "Search:",
+            "lengthMenu": "Show _MENU_ experiments",
+            "info": "Showing _START_ to _END_ of _TOTAL_ experiments",
+            "paginate": {
+                "next": "Next",
+                "previous": "Previous"
+            }
+        },
+        "columnDefs": [
+            { "targets": [2], "className": "dt-left" }
+        ]
+    });
+});
+</script>
+{% endblock javascripts %}
